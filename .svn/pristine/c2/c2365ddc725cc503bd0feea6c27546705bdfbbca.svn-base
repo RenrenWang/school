@@ -1,0 +1,63 @@
+<template>
+  <div class="grid">
+       <div class="grid-item" v-for="item in dataList">
+           <router-link :to="item.flink?item.flink:'/'">
+                <img :src="(item.fimage)" class="grid-item-img"/>
+                <p class="grid-item-text text-hidden-one">{{item.fname}}</p>   
+           </router-link>
+       </div>
+     
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'grid',
+  props:['dataList'],
+  data () {
+    return {
+        
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style  lang="scss">
+@import "../../../assets/style/base.scss";
+.grid{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:row;
+    align-items:center;
+    overflow:hidden;
+    .grid-item{
+        width:25%;
+        display:flex; 
+        flex-basis: 25%;
+        height:rem(180px);
+        box-sizing: border-box;
+        text-align:center;
+        position:relative;
+        background:#fff;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+
+      &:after{
+            @extend %borderBottomLine;
+      }
+      &:before{
+            @extend %borderRightLine;
+      }
+      .grid-item-img{
+          width:rem(80px);
+      }
+      .grid-item-text{
+          margin:rem(5px) 0;
+          font-size:12px;
+
+      }
+    }
+}
+</style>

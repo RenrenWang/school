@@ -1,0 +1,64 @@
+<template>
+    <div class="login">
+         <NavBar  leftIcon="icon-fanhui"  fixed="true" title="登录" @leftActive="back()"/>
+          <main class="main">
+              <form class="login-form">
+                 <input type="text" placeholder="用户名" class="input-text"> 
+                  <input type="password" placeholder="密码" class="input-text">
+                 <input type="button" value="登录" class="input-button">
+              </form>
+          </main>
+    </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+export default {
+  name: 'login',
+  data () {
+    return {
+   
+    }
+  },
+  methods:{
+       back(){
+
+      this.$router.go(-1);
+     
+   }
+  },
+  components:{
+      NavBar
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style  lang="scss">
+@import "../../../assets/style/base.scss";
+.login-form{
+  width:90%;
+  margin:0 auto;
+  input{
+    margin: rem(50px) 0;
+    display: block;
+    height: rem(120px);
+    width:100%;
+
+    border:none;
+    &.input-text{
+      padding-left: 15px;
+      box-sizing: border-box;
+      background: #eceaea;
+    }
+    &.input-button{
+      margin-top: rem(80px);
+        height: rem(110px);
+      background:$mainColor;
+      color: #fff;
+      font-size: 16px;
+    }
+  }
+
+}
+</style>

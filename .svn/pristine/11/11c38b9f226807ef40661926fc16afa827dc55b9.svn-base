@@ -1,0 +1,138 @@
+<template>
+  <div class="find">
+        <NavBar    fixed="true" title="发现" />
+           <main class="main">
+                    <div class="menu-linkage">
+                           <div class="menu-linkage-tits">
+                                   <ul>
+                                       <li v-for="v in 20" :class="(v==1?'active':'')">菜单{{v}}</li>
+                                   </ul>
+                           </div>
+                            <div class="menu-linkage-items">
+                                 <ul>
+                                     <li  v-for="v in 20">
+                                         <div class="mli-item-l">
+                                                <img src="/static/images/notice.png"/>
+                                                <div>
+                                                    <h4>类目{{v}}</h4>
+                                                    <p><span>添加次数：80次</span></p>
+                                                </div>
+                                         </div>
+                                          <a href="javascript:;" class="add-btn">
+                                               添加
+                                         </a>
+                                     </li>
+                                 </ul>
+                           </div>
+                    </div>
+           </main>
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+export default {
+  name: 'find',
+  data () {
+    return {
+   
+    }
+  },
+  components:{
+      NavBar
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+@import "../../../assets/style/base.scss";
+.find{
+    height:100%;
+    .main{
+        position:fixed;
+      
+        padding:0;
+        overflow:hidden;
+        top:$topBarH;
+        bottom:$bottomBarH+rem(1px);
+        width:100%;
+    }
+}
+.menu-linkage{
+    display:flex;
+    flex-direction:row;
+    height:100%;
+    overflow:hidden;
+     background:#f3f3f3;
+    .menu-linkage-tits{
+        width:rem(180px);
+       
+        text-align:center;
+        overflow-y:scroll;
+        >ul{
+            >li{
+                padding:rem(40px) 0;
+                  position:relative;
+                  font-size:14px;
+                  &.active{
+                      color:$mainColor;
+                  }
+                &:after{
+                        @extend %borderBottomLine;
+                           background: #fff;
+                } 
+            }
+        }
+    }
+
+    .menu-linkage-items{
+        flex:1;
+         overflow-y:scroll;
+           background:#fff;
+           >ul{
+               >li{
+                 
+                   display:flex;
+                    flex-direction:row;
+                    justify-content:space-between ;
+                    align-items:center;
+                    padding:rem(35px) rem(20px);
+                    position:relative;
+                    &:after{
+                        @extend %borderBottomLine;
+                  } 
+                  .mli-item-l{
+                    display:flex;
+                    flex-direction:row;
+                    align-items:center;
+                  font-size:12px;
+                  color:$hColor;
+                    h4{
+                    font-size:16px;
+                    padding-bottom:rem(15px);
+                    color:#000;
+                    }
+                      img{
+                          height:rem(70px);
+                          width:rem(70px);
+                          margin-right:rem(25px);
+                      }
+                  }
+
+                .add-btn{
+                padding:0px 15px;
+				height: 25px;
+				line-height: 25px;
+				border: 1px solid $mainColor;
+;
+				color:$mainColor ;
+				font-size: 14px;
+				border-radius: 5px;
+				box-sizing: content-box !important;
+                 }
+               }
+           }
+    }
+}
+</style>

@@ -1,0 +1,118 @@
+<template>
+  <div class="abook">
+     <NavBar  fixed="true" leftIcon=" "  title="通讯录"  rightIcon="icon-tianjia1" />
+         <main class="main">
+         	
+               <div class="list-box">
+                    <h5>房产科(3)</h5>
+                    <ul class="abook-list">
+                        <li v-for="v in 3">
+                            <a href="">
+                                <img src="../../../assets/images/userimage.png" class="avatar"/>
+                                <p><span>姓名：李大鹏</span><span>工号：19701001</span></p>
+                                <p><span>学院：医学院</span><span>联系方式：1395876665</span></p>
+                            </a>
+                        </li>
+                    </ul>
+                 </div>
+                 
+                 <div class="list-box">
+                    <h5>后勤处(10)</h5>
+                    <ul class="abook-list">
+                        <li v-for="v in 4">
+                            <a href="">
+                                <img src="../../../assets/images/userimage.png" class="avatar"/>
+                                <p><span>姓名：李大鹏</span><span>工号：19701001</span></p>
+                                <p><span>学院：医学院</span><span>联系方式：1395876665</span></p>
+                            </a>
+                        </li>
+                        
+
+                    </ul>
+                 </div>
+                 
+                  <div class="list-box">
+                    <h5>信息中心(5)</h5>
+                    <ul class="abook-list">
+                        <li v-for="v in 6">
+                            <a href="">
+                                <img src="../../../assets/images/userimage.png" class="avatar"/>
+                                <p><span>姓名：李大鹏</span><span>工号：19701001</span></p>
+                                <p><span>学院：医学院</span><span>联系方式：1395876665</span></p>
+                            </a>
+                        </li>
+                        
+
+                    </ul>
+                 </div>
+         </main>
+ 
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+export default {
+  name: 'about',
+  data () {
+    return {
+   
+    }
+  },
+  methods:{
+ 
+  },
+  components:{
+    NavBar  
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+@import "../../../assets/style/base.scss";
+
+.list-box{
+    h5{
+        height:rem(50px);
+        font-size:16px;
+        line-height:rem(50px);
+        padding-left:rem(40px);
+    }
+    .abook-list{
+  
+    >li{
+      background:#fff;
+      padding:rem(15px) rem(20px);
+      position:relative;
+      &:after{
+            @extend %borderBottomLine;
+      } 
+      >a{
+        display:flex;
+        align-items:center;
+        .avatar{
+            height:rem(70px);
+            width:rem(70px);
+        }
+        span{
+                font-size:14px;
+                 margin-right:rem(30px);
+                 color:$hColor;
+                 text-align:left;
+               }
+        >p{
+               display:flex;
+               flex-direction:row;
+               justify-content: space-between;
+              }
+        .username{
+            font-size:16px;
+            margin-left:rem(30px);
+        }
+      }
+    }
+}
+}
+
+</style>

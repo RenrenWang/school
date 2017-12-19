@@ -1,0 +1,24 @@
+
+$font_size:75px;
+@function rem($pixels){
+   @return  $pixels / $font_size*1rem;
+ }
+ $mainColor:#288bf0;
+//  $mainColor:#000;
+ $notLinkColor:#b9b9b9;
+$activeColor:$mainColor;
+$borderColor:#f2f2f2;
+$mianBgColor:#eeeeee;
+$top:rem(100px);
+$bottomBarH:rem(110px);
+$topBarH:rem(110px);
+$bottom_b:rem(110px);
+$loadingBottom:rem(20px);
+$hColor:#929397;
+$redColor:#ff403c;
+$lColor:#7ab77a;
+$xlColor:#9dcfff;
+
+
+
+

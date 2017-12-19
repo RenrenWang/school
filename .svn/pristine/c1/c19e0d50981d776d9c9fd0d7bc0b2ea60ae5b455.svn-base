@@ -1,0 +1,115 @@
+<template>
+  <div class="table">
+     <NavBar  leftIcon="icon-fanhui"  fixed="true" title="楼盘表" @leftActive="back()"/>
+       <main class="main">
+              <div class="table-top">
+            <span class="allColor">
+               全部(130)
+             </span>
+             <span  class="useColor">
+                使用(80)
+             </span>
+              <span class="freeColor" >
+                空闲(10)
+             </span>
+             <span  class="serviceColor">
+                维修(10)
+             </span>
+       </div>
+       
+    <div class="table-item" v-for="n in 10">
+          <p class="table-item-t"><span>{{n}}层</span></p>
+           <ul>
+               <li v-for="v in  13"  :class="[v%2==1? 'itemUseColor':'',v%3==1?'itemfreeColor':'']">
+                  <a href="">{{number(n,v)}}</a>
+               </li>
+              
+           </ul>
+    </div>   
+       </main>
+     
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+export default {
+  name:'table',
+  data () {
+    return {
+   
+    }
+  },
+  methods:{
+    number(n,v){
+       return    v<10?  n+"0"+v:n+""+v;
+    },
+    back(){
+
+      this.$router.go(-1);
+     
+    }
+  },
+  components:{
+    NavBar
+  }
+}
+</script>
+
+
+<style scoped lang="scss">
+@import "../../../assets/style/base.scss";
+.table {
+  
+  .table-top{
+     display:flex;
+     flex-direction:row;
+      justify-content:center;
+      margin:rem(15px) 0;
+       >span{
+         padding:rem(15px);
+         font-szie:18px;
+       }
+  }
+  .table-item{
+     display:flex;
+     flex-direction:row;
+     text-align:center;
+    
+     >p{
+      width:15%;
+      flex-basis: 15%;
+      border:1px solid #000;
+      box-sizing: content-box;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:$xlColor;
+        border:1px solid #fff;
+     }
+    >ul{
+         flex:1;
+         display:flex;
+         flex-direction:row;
+         flex-wrap:wrap;
+         >li{   
+          width:20%;
+         border:1px solid #fff;
+          padding:rem(15px);
+          flex-basis: 20%;
+          padding:rem(15px);
+          box-sizing: border-box;
+          background-color:$lColor;
+
+          >a{
+            display:flex;
+            text-align:center;
+          }
+         }
+     }
+    
+    }
+  
+}
+</style>

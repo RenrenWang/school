@@ -1,0 +1,171 @@
+<template>
+  <div class="ManagePage">
+       <NavBar leftIcon="icon-fanhui" rightIcon="icon-sousuo-sousuo"    fixed="true" title="设施信息"  @leftActive="back()"  />
+       <main class="main">
+          
+            <div class="filterKind">
+                 <a href="" class="all-btn">全部</a>
+                <select >
+                    <option value ="volvo">楼幢</option>
+                    <option value ="volvo" v-for="v in 10">楼幢{{v}}</option>
+                </select>
+                <select >
+                    <option value ="volvo">房间</option>
+                     <option value ="volvo" v-for="v in 10">房间{{v}}</option>
+                </select>
+                <select >
+                    <option value ="volvo">类别</option>
+                   <option value ="volvo" v-for="v in 10">类别{{v}}</option>
+                </select>
+               
+            </div>
+             <!-- <div class="manage-list">
+                 <router-link to="/toolManageD" key="v" v-for="v in 30">
+                       <img src="/static/images/about.jpg" />
+                       <div class="manage-list-text">
+                               <div class="m-top">
+                                      <h3>楼宇名称{{v}}</h3>
+                                     
+                                </diV>
+                                <p><span class="h3">名称{{v}}</span><span>102017{{v}}</span></p>
+                                <p><span>楼幢名：楼幢名{{v}}</span><span>房间号：{{v}}</span></p>
+                                <p><span>使用部门{{v}}</span><span>使用日期</span></p>
+                              
+                        
+                       </div>
+                 </router-link>
+            </div>-->
+            <ListView :dataUrl="listUrl" :ItemShowType="4"/>
+       </main>
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+import ListView from '../../common/ListView/ListView.vue'
+export default {
+  name: 'ManagePage',
+  data () {
+    return {
+        listUrl:"/roomInfoAction.action?postType=DEVLIST"   
+    }
+  },
+  
+  components:{
+     NavBar,
+     ListView
+  },
+
+  methods:{
+
+     
+       back(){
+      this.$router.go(-1);     
+   },
+   
+   toTable(){
+        this.$router.push({ path:'/table' });
+   }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+@import "../../../assets/style/base.scss";
+// .look-table{
+//    padding:rem(15px) rem(15px) 0 rem(15px);
+//    text-align:right;
+//    overflow:hidden;
+//     >button{
+//         font-size:14px;
+//         color:$mainColor;
+//         padding:rem(10px);
+//         background:none;
+//         outline:none;
+//         border:1px solid $mainColor;
+//         border-radius:rem(15px);
+//     }
+// }
+.filterKind{
+    padding:rem(30px) 0;
+    position:relative;
+    display:flex;
+    text-align:center;
+    align-content: center;
+    justify-content: space-between;
+     flex-direction:row;
+     &:after{
+             @extend %borderBottomLine;
+    }
+    //  &:before{
+    //          @extend %borderTopLine;
+    // }
+    .all-btn,select{
+        flex:1;
+        height:rem(50px);
+        margin:0 rem(15px);
+       border-radius:rem(15px);
+      box-sizing:border-box;
+    }
+    .all-btn{
+        border:1px solid $mainColor;
+       
+         line-height:rem(50px);
+         color:$mainColor;
+       
+    }
+    select{
+        outline:none;
+    }
+}
+.manage-list{
+    >a{
+        display:flex;
+        flex-direction:row;
+          padding:rem(20px) rem(15px);
+          position:relative;
+           &:after{
+             @extend %borderBottomLine;
+        }
+        >img{
+           height:rem(190px);
+           width:rem(190px);
+           border-radius:rem(10px);
+        }
+        >.manage-list-text{
+            margin-left:rem(25px);
+            display:flex;
+            flex:1;
+            flex-direction:column;
+            justify-content: space-between;
+             align-content: space-between;
+             .m-top{
+                    display:flex;
+                 flex-direction:row;
+                justify-content: space-between;
+                >.h3{
+                 font-size:18px;
+                 color:#000;
+                }
+             }
+            span{
+                font-size:14px;
+                 margin-right:rem(30px);
+                 color:$hColor;
+                 text-align:left;
+               }
+              
+              >p{
+                  display:flex;
+                 flex-direction:row;
+                justify-content: space-between;
+              }
+              .h3{
+                 font-size:16px;
+                 color:#000;
+                }
+        }
+    }
+}
+</style>

@@ -1,0 +1,217 @@
+<template>
+  <div class="politics">
+     <NavBar leftIcon="icon-fanhui"  rightIcon="icon-tianjia1" fixed="true" title="政策法规" @leftActive="back()"  @rightActive="toUrl()"/>
+     <main class="main">
+     <ul class="tab-bar">
+            <li @click="tabSelect(Tab_1)">
+                <a href="javascript:;":class="Tab_1==isTab?'active':''">本校</a>
+             </li>
+            <li  @click="tabSelect(Tab_2)">
+               <a href="javascript:;" :class="Tab_2==isTab?'active':''">本省</a>
+            </li>
+             <li  @click="tabSelect(Tab_3)">
+               <a href="javascript:;" :class="Tab_3==isTab?'active':''">行业</a>
+            </li>
+     </ul>
+        
+    
+     <div class="tab-bar-content" v-show="Tab_1==isTab">
+      <p v-show="isLoading">正在加载...</p>
+
+        <div class="listview listview-3 recruit-list mescroll" id="mescroll">
+		
+            <ul id="dataList" class="data-list" >
+                 <LisViewItem_1  v-for="(v,i) in listviewdata_1" :listViewData="v" :key="i"/>
+            </ul>
+         </div>
+         
+     </div>
+       <div class="tab-bar-content" v-show="Tab_2==isTab">
+         <p v-show="isLoading">正在加载...</p>
+         <div class="listview listview-3 recruit-list mescroll" id="mescroll">
+		
+            <ul id="dataList" class="data-list" >
+               <LisViewItem_1  v-for="(v,i) in listviewdata_2" :listViewData="v" :key="i"/>
+             </ul>
+         </div>
+     </div>
+       <div class="tab-bar-content" v-show="Tab_3==isTab">
+         <p v-show="isLoading">正在加载...</p>
+          <div class="listview listview-3">
+               <LisViewItem_1  v-for="(v,i) in listviewdata_3" :listViewData="v" :key="i"/>
+          </div>
+       </div>
+   
+     </main>
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+import LisViewItem_1 from '../../common/LisViewItem/LisViewItem_1.vue'
+export default {
+  name: 'notice',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      Tab_1:"Tab_1",
+      Tab_2:"Tab_2",
+      Tab_3:"Tab_3",
+      isTab:"Tab_1",
+      listviewdata_1:[],
+      listviewdata_2:[],
+      listviewdata_3:[],   
+      isLoading:true ,
+        mescroll:Object,
+    }
+  },
+
+    mounted(){
+   this.getAllData();
+   this.initMescroll();
+  },
+  methods:{
+     getAllData(){   
+        this.isLoading=true;  
+        let u=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=U&pageno=1');
+        let r=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=R&pageno=1');
+        let m=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=M&pageno=1');      
+        this.$http.all([u,r,m])
+        .then(this.$http.spread((data1, data2,data3)=> {
+                  this.listviewdata_1= data1.data.data;               
+                  this.listviewdata_2= data2.data.data;
+                  this.listviewdata_3= data3.data.data; 
+                  this.isLoading=false
+        }))
+    },
+      tabSelect(tab){
+         this.isTab=tab;
+      },
+   back(){
+      this.$router.go(-1);     
+   },
+	initMescroll() {
+			//创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+			//解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+              let self=this;
+			this.mescroll = new MeScroll("mescroll", {
+				down: {
+					use: false,
+					callback() {
+						console.log(1);
+					}
+				},
+
+				up: {
+					callback: this.upCallback, //上拉回调
+					auto: true,
+					//以下参数可删除,不配置
+					//page:{size:8}, //可配置每页8条数据,默认10
+					toTop: { //配置回到顶部按钮
+						src: require("../../../assets/images/mescroll-totop.png"), //默认滚动到1000px显示,可配置offset修改
+						//offset : 1000
+					},
+					htmlNodata: '<p class="upwarp-nodata">-- 没有更多数据 --</p>',
+					page: {
+						
+						size: 10,
+						time:3000
+					},
+					
+					empty: { //配置列表无任何数据的提示
+						warpId: "dataList",
+						icon:require('../../../assets/images/mescroll-empty.png'),
+						tip: "亲,暂无相关数据哦~",
+						// btntext: "去逛逛 >",
+						// btnClick() {
+						// 	// alert("点击了去逛逛按钮");
+						// }
+					}
+				}
+			});
+
+			//初始化vue后,显示vue模板布局
+			document.getElementById("dataList").style.display = "block";
+		},
+		//上拉回调 page = {num:1, size:10}; num:当前页 ,默认从1开始; size:每页数据条数,默认10
+		upCallback(page) {
+			console.log("page.num==" + page.num + ", page.size==" + page.size);
+			//联网加载数据
+                console.log("------->"+page.num);
+			this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=U&pageno='+ page.num).then((response) => {
+				//data=[]; //打开本行注释,可演示列表无任何数据empty的配置
+				let data = response.data.data;
+				// this.pdlist = data.data;
+
+
+				//data=[]; //打开本行注释,可演示列表无任何数据empty的配置
+				//如果是第一页需手动制空列表
+			   if (page.num == 1) this.listviewdata_1 = [];
+
+			
+				//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+				//传参:数据的总数; mescroll会自动判断列表是否有无下一页数据,如果数据不满一页则提示无更多数据;
+				this.mescroll.endSuccess(data.length);
+				console.log(this.mescroll);
+					//更新列表数据
+				this.listviewdata_1 = this.listviewdata_1.concat(data);
+				//console.log("this.pdlist.length==" + this.pdlist.length);
+
+			}).catch(error=>{
+				this.mescroll.endSuccess(0);
+				// this.mescroll.endErr();
+				// if(this.pdlist<=0){
+                //      this.isError=true;
+				// }
+				//this.mescroll.endSuccess(this.pdlist<0?);
+
+			})
+
+		}
+  },
+  components:{
+    NavBar,
+    LisViewItem_1
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+@import "../../../assets/style/base.scss";
+.notice{
+   .tab-bar-content{
+     background:$mianBgColor;
+      overflow:hidden;
+   }
+}
+.tab-bar{
+     display:flex;
+     text-align:center;
+     align-items:center;
+     height:rem(100px);
+     line-height:rem(100px);
+    overflow:hidden;
+     >li{
+       position:relative;
+       flex:1;
+     
+         box-sizing: border-box;
+      //   &:after{
+      //       @extend %borderBottomLine;
+      // }
+      border-bottom:5px solid $borderColor;
+      &:before{
+            @extend %borderRightLine;
+      }
+       >a{
+         
+         font-size:16px;
+         &.active{
+           color:$mainColor;
+  
+         }
+       }
+     }
+}
+</style>

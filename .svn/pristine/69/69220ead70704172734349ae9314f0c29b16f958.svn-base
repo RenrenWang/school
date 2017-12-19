@@ -1,0 +1,138 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import Hello from '@/components/Hello'
+import Layout from '../components/page/Layout/Layout.vue'
+import Home from '../components/page/Home/Home.vue'
+import Notice from '../components/page/Notice/Notice.vue'
+import NoticeD from '../components/page/Notice/NoticeD.vue'
+import AddNotice from '../components/page/Notice/AddNotice.vue'
+import My from '../components/page/My/My.vue'
+import Login from '../components/page/Login/Login.vue'
+import About from '../components/page/About/About.vue'
+import AddressBook from '../components/page/AddressBook/AddressBook.vue'
+import Find from '../components/page/Find/Find.vue'
+import Politics from '../components/page/Politics/Politics.vue'
+import PoliticsD from '../components/page/Politics/PoliticsD.vue'
+import ManagePage from '../components/page/ManagePage/ManagePage.vue'
+import ManageD from '../components/page/ManagePage/ManageD.vue'
+import RootManagePage from '../components/page/RootManagePage/ManagePage.vue'
+import ToolManagePage from '../components/page/ToolManagePage/ManagePage.vue'
+
+import Table from '../components/page/Table/Table.vue'
+
+import RootManageD from '../components/page/RootManagePage/ManageD.vue'
+import ToolManageD from '../components/page/ToolManagePage/ManageD.vue'
+import SelectRoot from '../components/page/SelectRoot/ManagePage.vue'
+import SelectPersonnel from '../components/page/SelectPersonnel/ManagePage.vue'
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    
+     {
+      path: '/',
+      // name: 'layout',
+      component: Layout,
+      children: [
+        { path: '/', redirect: '/home' },
+        {
+          path: '/home',
+          name: 'home',
+          component: Home
+        },
+        {
+          path: '/find',
+          name: 'find',
+          component: Find
+        },
+        {
+          path: '/addressBook',
+          name: 'addressBook',
+          component: AddressBook
+        },
+         {
+          path: '/my',
+          name: 'my',
+          component: My
+        }
+
+      ]
+    },
+    {
+      path:'/notice',
+      name: 'notice',
+      component: Notice
+    },{
+      path:'/noticeD',
+      name: 'noticeD',
+      component: NoticeD
+    },{
+      path:'/addNotice',
+      name: 'addNotice',
+      component:AddNotice
+    },{
+      path:'/login',
+      name: 'login',
+      component: Login
+    },{
+      path:'/about',
+      name: 'about',
+      component: About
+    },
+    {
+      path:'/politics',
+      name: 'politics',
+      component: Politics
+    },
+     {
+      path:'/managePage',
+      name: 'managePage',
+      component: ManagePage
+    },
+     {
+      path:'/manageD/:id',
+      name: 'manageD',
+      component: ManageD
+    },
+     {
+      path:'/rootManagePage',
+      name: 'rootManagePage',
+      component: RootManagePage
+    },
+    {
+      path:'/toolManagePage',
+      name: 'toolManagePage',
+      component:ToolManagePage
+    },
+   
+    {
+      path:'/rootManageD',
+      name: 'rootManageD',
+      component:RootManageD
+    },
+      {
+      path:'/toolManageD',
+      name: 'toolManageD',
+      component:ToolManageD
+    },
+    {
+      path:'/selectRoot',
+      name: 'selectRoot',
+      component:SelectRoot
+    },
+    {
+      path:'/selectPersonnel',
+      name: 'selectPersonnel',
+      component:SelectPersonnel
+    },
+  
+    {
+      path:'/table',
+      name: 'table',
+      component: Table
+    }
+    
+    
+   
+  ]
+})

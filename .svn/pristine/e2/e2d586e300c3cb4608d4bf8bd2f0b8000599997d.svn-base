@@ -1,0 +1,36 @@
+<template>
+  <div class="scan" @click="back()">
+        <img  src="../../../assets/images/scan.jpg"/>
+       
+  </div>
+</template>
+
+<script>
+export default {
+  name: '',
+  data () {
+    return {
+   
+    }
+  },
+  methods:{
+        back(){
+
+      this.$router.go(-1);
+     
+   }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.scan{
+    width:100%;
+    height:100%;
+    img{
+        width:100%;
+    height:100%; 
+    }
+}
+</style>

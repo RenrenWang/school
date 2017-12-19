@@ -1,0 +1,136 @@
+<template>
+  <div class="notice">
+     <NavBar leftIcon="icon-fanhui"  rightIcon="icon-tianjia1" fixed="true" title="通知公告" @leftActive="back()"  @rightActive="toUrl()"/>
+     <main class="main">
+         <ul class="tab-bar">
+            <li @click="tabSelect(Tab_1)">
+                <a href="javascript:;":class="Tab_1==isTab?'active':''">当年</a>
+             </li>
+            <li  @click="tabSelect(Tab_2)">
+               <a href="javascript:;" :class="Tab_2==isTab?'active':''">往年</a>
+            </li>
+            <li  @click="tabSelect(Tab_3)">
+               <a href="javascript:;" :class="Tab_3==isTab?'active':''">全部</a>
+            </li>
+     </ul>
+     <p v-if="isLoading">正在加载...</p>
+     <div v-else>
+     
+        <div class="tab-bar-content" v-show="Tab_1==isTab">
+          <div class="listview listview-3">
+               <LisViewItem_1  v-for="(v,i) in listviewdata_1" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+     
+     <div class="tab-bar-content" v-show="Tab_2==isTab">
+          <div class="listview listview-3">
+              <LisViewItem_1  v-for="(v,i) in listviewdata_2" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+     
+     <div class="tab-bar-content" v-show="Tab_3==isTab">
+          <div class="listview listview-3">
+              <LisViewItem_1  v-for="(v,i) in listviewdata_3" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+     </div>
+     
+     </main>
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+import LisViewItem_1 from '../../common/LisViewItem/LisViewItem_1.vue'
+export default {
+  name: 'notice',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      Tab_1:"Tab_1",
+      Tab_2:"Tab_2",
+      Tab_3:"Tab_3",
+      isTab:"Tab_1",
+      listviewdata_1:[],
+      listviewdata_2:[],
+      listviewdata_3:[],
+      isLoading:true
+    }
+  },
+  mounted(){
+   this.getAllData()
+  },
+  methods:{
+     getAllData(){   
+
+        this.isLoading=true
+        let _old=this.$http.get(BASEURL+'/newsAction.action?affType=T&yearClass=R&pageno=1');
+        let _new=this.$http.get(BASEURL+'/newsAction.action?affType=T&yearClass=H&pageno=1');
+        let _all=this.$http.get(BASEURL+'/newsAction.action?affType=T&yearClass=A&pageno=1');
+        this.$http.all([_old,_new,_all])
+        .then(this.$http.spread((data1, data2,data3)=> {
+              this.listviewdata_1=  this.listviewdata_1.concat(data1.data.data);
+              this.listviewdata_2= this.listviewdata_2.concat(data2.data.data);              
+ 							this.listviewdata_3= this.listviewdata_3.concat(data3.data.data); 
+                 this.isLoading=false
+        }))
+    },
+    tabSelect(tab){
+         this.isTab=tab;
+      },
+   back(){
+
+      this.$router.go(-1);
+     
+   },
+   toUrl(){
+     this.$router.push({ path: '/addNotice' });
+   }
+	
+  },
+  components:{
+    NavBar,
+    LisViewItem_1
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+@import "../../../assets/style/base.scss";
+.notice{
+   .tab-bar-content{
+     background:$mianBgColor;
+      overflow:hidden;
+   }
+}
+.tab-bar{
+     display:flex;
+     text-align:center;
+     align-items:center;
+     height:rem(100px);
+     line-height:rem(100px);
+    overflow:hidden;
+     >li{
+       position:relative;
+       flex:1;
+     
+         box-sizing: border-box;
+      //   &:after{
+      //       @extend %borderBottomLine;
+      // }
+      border-bottom:5px solid $borderColor;
+      &:before{
+            @extend %borderRightLine;
+      }
+       >a{
+         
+         font-size:16px;
+         &.active{
+           color:$mainColor;
+  
+         }
+       }
+     }
+}
+</style>

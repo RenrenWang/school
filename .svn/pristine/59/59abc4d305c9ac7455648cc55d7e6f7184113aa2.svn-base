@@ -1,0 +1,121 @@
+<template>
+  <div class="politics">
+     <NavBar leftIcon="icon-fanhui"  rightIcon="icon-tianjia1" fixed="true" title="政策法规" @leftActive="back()"  @rightActive="toUrl()"/>
+     <main class="main">
+     <ul class="tab-bar">
+            <li @click="tabSelect(Tab_1)">
+                <a href="javascript:;":class="Tab_1==isTab?'active':''">本校</a>
+             </li>
+            <li  @click="tabSelect(Tab_2)">
+               <a href="javascript:;" :class="Tab_2==isTab?'active':''">本省</a>
+            </li>
+             <li  @click="tabSelect(Tab_3)">
+               <a href="javascript:;" :class="Tab_3==isTab?'active':''">行业</a>
+            </li>
+     </ul>
+     <div class="tab-bar-content" v-show="Tab_1==isTab">
+          <div class="listview listview-3">
+                <LisViewItem_1  v-for="(v,i) in listviewdata_1" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+       <div class="tab-bar-content" v-show="Tab_2==isTab">
+          <div class="listview listview-3">
+               <LisViewItem_1  v-for="(v,i) in listviewdata_2" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+       <div class="tab-bar-content" v-show="Tab_3==isTab">
+          <div class="listview listview-3">
+               <LisViewItem_1  v-for="(v,i) in listviewdata_3" :listViewData="v" :key="i"/>
+          </div>
+     </div>
+     </main>
+  </div>
+</template>
+
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+import LisViewItem_1 from '../../common/LisViewItem/LisViewItem_1.vue'
+export default {
+  name: 'notice',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      Tab_1:"Tab_1",
+      Tab_2:"Tab_2",
+      Tab_3:"Tab_3",
+      isTab:"Tab_1",
+      listviewdata_1:[],
+      listviewdata_2:[],
+      listviewdata_3:[],       
+    }
+  },
+
+    mounted(){
+   this.getAllData()
+  },
+  methods:{
+     getAllData(){     
+        let u=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=U&pageno=1');
+        let r=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=R&pageno=1');
+        let m=this.$http.get(BASEURL+'/newsAction.action?affType=R&policyType=M&pageno=1');      
+        this.$http.all([u,r,m])
+        .then(this.$http.spread((data1, data2,data3)=> {
+                  this.listviewdata_1= data1.data.data;               
+                  this.listviewdata_2= data2.data.data;
+                  this.listviewdata_3= data3.data.data; 
+        }))
+    },
+      tabSelect(tab){
+         this.isTab=tab;
+      },
+   back(){
+      this.$router.go(-1);     
+   }
+	
+  },
+  components:{
+    NavBar,
+    LisViewItem_1
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+@import "../../../assets/style/base.scss";
+.notice{
+   .tab-bar-content{
+     background:$mianBgColor;
+      overflow:hidden;
+   }
+}
+.tab-bar{
+     display:flex;
+     text-align:center;
+     align-items:center;
+     height:rem(100px);
+     line-height:rem(100px);
+    overflow:hidden;
+     >li{
+       position:relative;
+       flex:1;
+     
+         box-sizing: border-box;
+      //   &:after{
+      //       @extend %borderBottomLine;
+      // }
+      border-bottom:5px solid $borderColor;
+      &:before{
+            @extend %borderRightLine;
+      }
+       >a{
+         
+         font-size:16px;
+         &.active{
+           color:$mainColor;
+  
+         }
+       }
+     }
+}
+</style>

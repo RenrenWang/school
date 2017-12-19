@@ -1,0 +1,300 @@
+<template>
+  <div class="deviceDetail">
+ 
+     <NavBar leftIcon="icon-fanhui"  fixed="true" title="设备详情" @leftActive="back()" />
+     <main class="main">
+    
+         <ul class="tab-bar">
+            <li @click="tabSelect(Tab_1)">
+                <a href="javascript:;":class="Tab_1==isTab?'active':''">基本信息</a> 
+             </li>
+            <li  @click="tabSelect(Tab_2)">
+               <a href="javascript:;" :class="Tab_2==isTab?'active':''">使用及位置</a>
+            </li>
+            <li  @click="tabSelect(Tab_3)">
+               <a href="javascript:;" :class="Tab_3==isTab?'active':''">维修信息</a>
+            </li>            
+            
+     </ul>
+     
+     <div class="tab-bar-content" v-show="Tab_1==isTab">
+          <div class="listview listview-3">
+                <div class="top-section">                      
+                      <img :src="Changimgs(listviewdata_1.sburi)" >
+                </div>
+                <div class="center-section">
+                  <p><span>物品名称：{{listviewdata_1.yqmc}}</span></p>
+                    <p><span>物品编号：{{listviewdata_1.yqbh}}</span></p>
+                    <p><span>物品类别：{{listviewdata_1.lbmc}}</span></p>
+                   <p><span>型号：{{listviewdata_1.xh}}</span></p>
+                    <p><span>规格：{{listviewdata_1.gz}}</span></p>
+                    
+                    <p><span>购置日期：{{listviewdata_1.cqrq}}</span></p>
+                    <p><span>使用部门：{{listviewdata_1.usedeptname}}</span></p>
+                    <p><span>类别：{{listviewdata_1.sbTypename}}</span></p>
+                  
+                </div>
+                
+               
+          </div>
+     </div>
+     
+     <div class="tab-bar-content" v-show="Tab_2==isTab">
+          <div class="listview listview-3">
+                <div class="group-top"><span>使用迁移次数（{{listviewdata_2.useSumm}}）</span></div>
+                                                         
+                     <ul>
+                         <li class="group-item-sub" v-for="v in listviewdata_2.data">
+                             <a href="">                                  
+                                  <img :src="Changimgs(v.sburi)" >
+                                  <div class="group-item-sub-text">
+                                  		<p><span>物品名称：{{v.yqmc}}</span><span>物品编号：{{v.yqbh}}</span></p>
+                                      <p><span>型号规格：{{v.xh}}{{v.gz}}</span><span>数量：{{v.yqnums}}</span></p>                                         
+                                      <p><span>楼幢：{{v.buildingName}}</span><span>层：{{v.roomFloor}}</span><span>房间号：{{v.roomName}}</span></p>
+                                      <p><span>部门：{{v.deptName}}</span><span>类别:{{v.yqtypeName}}</span><span>状态:{{v.useStatusname}}</span></p>
+                                  </div>
+                             </a>
+                        </li>
+                     </ul>                     
+            </div>
+     </div>
+     
+     <div class="tab-bar-content" v-show="Tab_3==isTab">
+          <div class="listview listview-3">
+                <div class="group-top"><span>维修次数（{{listviewdata_3.fixSumm}}）</span></div>                
+                             
+                     <ul>
+                         <li class="group-item-sub" v-for="n in listviewdata_3.data">
+                             <a href="">                                  
+                                  <img :src="Changimgs(n.sburi)" >
+                                  <div class="group-item-sub-text">
+                                  	  <p><span>物品名称：{{n.yqmc}}</span><span>物品编号：{{n.yqbh}}</span></p>
+                                       <p><span>维修日期：{{n.sbfixDate}}</span><span>部门：{{n.deptName}}</span></p>
+                                       <p><span>负责人：{{n.fixPerson}}</span><span>费用：{{n.fixFee}}</span></p>
+                                       <p><span>维修事由：{{n.fixReason}},{{n.fixNote}}</span></p>
+                                  </div>
+                             </a>
+                        </li>
+                     </ul>
+                                      
+          </div>
+     </div>
+    
+     </main>
+  </div>
+</template>
+<script>
+import NavBar from '../../common/NavBar/NavBar.vue'
+export default {
+  name: 'deviceDetail',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      Tab_1:"Tab_1",
+      Tab_2:"Tab_2",
+      Tab_3:"Tab_3",     
+      isTab:"Tab_1",   		 
+      listviewdata_1:[],
+      listviewdata_2:[],
+      listviewdata_3:[]
+    }
+    
+  },
+  
+ 	mounted(){    
+    this.getAllData();
+  },
+  
+  methods:{
+  	getAllData(){
+        let id=this.$route.params.id;       
+        let base=this.$http.get(BASEURL+'/roomInfoAction.action?postType=DEVDETAIL&ids='+id);
+        let room=this.$http.get(BASEURL+'/roomInfoAction.action?postType=DEVSEAT&ids='+id);
+        let fixed=this.$http.get(BASEURL+'/roomInfoAction.action?postType=DEVFIX&ids='+id);
+      
+        this.$http.all([base,room,fixed])
+        .then(this.$http.spread((data1,data2,data3)=> {           
+                  this.listviewdata_1=data1.data
+                  this.listviewdata_2=data2.data
+                  this.listviewdata_3=data3.data  
+        }))
+    },
+    
+    tabSelect(tab){
+         this.isTab=tab;
+     },
+     
+    back(){
+      this.$router.go(-1);     
+    },
+    
+   toUrl(){
+     this.$router.push({ path: '/addNotice' });
+   },
+   
+   Changimgs(url){
+   	return BASEURL+url;
+   }
+	
+  },
+  components:{
+    NavBar
+    //LisViewItem_1
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss">
+@import "../../../assets/style/base.scss";
+.notice{
+   .tab-bar-content{
+     background:$mianBgColor;
+      overflow:hidden;
+   }
+}
+.tab-bar{
+     display:flex;
+     text-align:center;
+     align-items:center;
+     height:rem(100px);
+     line-height:rem(100px);
+    overflow:hidden;
+     >li{
+       position:relative;
+       flex:1;
+     
+         box-sizing: border-box;
+      //   &:after{
+      //       @extend %borderBottomLine;
+      // }
+      border-bottom:5px solid $borderColor;
+      &:before{
+            @extend %borderRightLine;
+      }
+       >a{
+         
+         font-size:16px;
+         &.active{
+           color:$mainColor;
+  
+         }
+       }
+     }
+}
+.top-section,.center-section,.bottom-section{
+    
+    .title{
+          padding:0 rem(25px);
+        font-size:18px;
+    }
+    background:#fff;
+}
+.top-section{
+  height:rem(300px);
+   img{
+       height:100%;
+       width:100%;
+   }
+}
+.center-section{
+    font-size:16px;
+    padding:rem(25px);
+    P{
+        color:$hColor;
+        margin:rem(15px) 0;
+        display:flex;
+        justify-content: space-between;
+    }
+}
+
+.group-top{
+  padding:rem(40px) rem(20px);
+  position:relative;
+  background:#fff;
+  display:flex;
+   font-size:16px;
+  justify-content:space-between;
+       &:after{
+            @extend %borderBottomLine;
+       }
+  
+      &:before{
+            @extend %borderRightLine;
+      }
+}
+.group-item-title{
+  padding:rem(40px) rem(20px);
+  position:relative;
+  background:#fff;
+ font-size:16px;
+  display:flex;
+ justify-content:space-between;
+
+      &:after{
+            @extend %borderBottomLine;
+       }
+  
+      &:before{
+            @extend %borderRightLine;
+      }
+
+}
+
+ .group-item-sub{
+ 
+   background:#fff;
+   position:relative;
+   padding:rem(15px);
+   &:after{
+            @extend %borderBottomLine;
+       }
+    
+    
+   a{
+     display:flex;
+    
+     img{
+          height:rem(120px);
+           width:rem(120px);
+           border-radius:rem(10px);
+     }
+
+     .group-item-sub-text{
+       box-sizing:border-box;
+             padding:rem(8px) 0;
+            margin-left:rem(25px);
+            display:flex;
+            flex:1;
+            flex-direction:column;
+            justify-content: space-between;
+             align-content: space-between;
+             .m-top{
+                    display:flex;
+                 flex-direction:row;
+                justify-content: space-between;
+                >.h3{
+                 font-size:18px;
+                 color:#000;
+                }
+             }
+            span{
+                font-size:14px;
+                 margin-right:rem(30px);
+                 color:$hColor;
+                 text-align:left;
+               }
+              
+              >p{
+                  display:flex;
+                 flex-direction:row;
+                justify-content: space-between;
+              }
+              .h3{
+                 font-size:18px;
+                 color:#000;
+                }
+     }
+   }
+ }
+</style>
