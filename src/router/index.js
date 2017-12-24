@@ -10,7 +10,7 @@ import My from '../components/page/My/My.vue'
 import Map from '../components/page/Map/Map.vue'
 import Login from '../components/page/Login/Login.vue'
 import Register from '../components/page/Register/Register.vue'
-
+import Share from '../components/page/Share/Share.vue'
 import About from '../components/page/About/About.vue'
 import Instr from '../components/page/About/Instr.vue'
 import AddressBook from '../components/page/AddressBook/AddressBook.vue'
@@ -227,7 +227,12 @@ export default new Router({
       path:'/imagementHandleD',
       name: 'imagementHandleD',
       component: IMagementHandleD
-    }
+    },
+    {
+     path:'/Share',
+     name: 'Share',
+     component: Share
+   }
 
   ]
 })
